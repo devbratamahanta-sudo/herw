@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: url("https://images.unsplash.com/photo-1518893063532-6c2a3d83e7a2") center/cover no-repeat;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.92);
+        padding: 25px;
+        border-radius: 25px;
+        text-align: center;
+        width: 90%;
+        max-width: 360px;
+        animation: pop 1s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 2;
+    }
+
+    @keyframes pop {
+        0% { transform: scale(0.4); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+        color: #e91e63;
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    button {
+        padding: 12px 28px;
+        font-size: 18px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        margin: 10px;
+        transition: 0.3s;
+    }
+
+    #yes {
+        background: #e91e63;
+        color: white;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    #no {
+        background: #999;
+        color: white;
+        position: absolute;
+    }
+
+    .heart {
+        position: fixed;
+        bottom: -20px;
+        font-size: 20px;
+        animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-110vh); opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="card">
+    <h1>Will you be my Valentine, <span id="name">My Love</span>? 💘</h1>
+    <p>I promise smiles, care, and unlimited chocolates 🍫</p>
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😢</button>
+</div>
+
+<script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const music = document.getElementById("music");
+    const nameSpan = document.getElementById("name");
+
+    // CHANGE NAME HERE 👇
+    nameSpan.innerText = "❤️";
+
+    let noScale = 1;
+
+    function moveNo() {
+        const x = Math.random() * (window.innerWidth - 120);
+        const y = Math.random() * (window.innerHeight - 120);
+
+        noScale -= 0.1;
+        noBtn.style.transform = `scale(${noScale}) rotate(${Math.random()*40-20}deg)`;
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+
+        if (noScale < 0.4) {
+            noBtn.style.opacity = 0;
+        }
+    }
+
+    noBtn.addEventListener("mouseover", moveNo);
+    noBtn.addEventListener("touchstart", moveNo);
+
+    yesBtn.onclick = () => {
+        music.play();
+
+        document.body.innerHTML = `
+            <div class="card">
+                <h1>YAYYY! 💕💐</h1>
+                <p>You just made my heart skip a beat ❤️</p>
+                <p>Happy Valentine’s Day 💝</p>
+            </div>
+        `;
+
+        createHearts();
+
+        setTimeout(() => {
+            window.location.href =
+            "https://wa.me/?text=I%20said%20YES!%20Happy%20Valentine's%20Day%20💖";
+        }, 4000);
+    };
+
+    function createHearts() {
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }, 300);
+    }
+
+    // Start floating hearts in background
+    createHearts();
+</script>
+
+</body>
+</html>
